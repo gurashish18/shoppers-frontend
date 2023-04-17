@@ -7,19 +7,18 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 import { logout } from "../redux/auth/authSlice";
 import { ToastContainer, toast } from "react-toastify";
 
-
 const Navbar = () => {
 	const dispatch = useDispatch();
-	const { cartquantity } = useSelector(state => state.cart);
-	const { user } = useSelector(state => state.auth);
+	const { cartquantity } = useSelector((state) => state.cart);
+	const { user } = useSelector((state) => state.auth);
 
 	const handleLogout = () => {
 		dispatch(logout());
-		toast.warning('Logged out!', {
+		toast.warning("Logged out!", {
 			position: "bottom-right",
 			autoClose: 5000,
 			hideProgressBar: false,
@@ -29,7 +28,7 @@ const Navbar = () => {
 			progress: undefined,
 			theme: "light",
 		});
-	}
+	};
 	return (
 		<Container>
 			<ToastContainer />
@@ -41,42 +40,45 @@ const Navbar = () => {
 					</SearchContainer>
 				</Left>
 				<Center>
-					<Logo>SHOPPERS.</Logo>
+					<Logo>
+						<Link to="/">SHOPPERS.</Link>
+					</Logo>
 				</Center>
 				<Right>
-					{
-						user !== null ?
-							<>
-								<ItemContainer onClick={() => handleLogout()}>
-									<MenuItem>{user.username}</MenuItem>
-									<LogoutIcon />
-								</ItemContainer>
-								<MenuItem>
-									<Link to="cart">
-										<Badge badgeContent={cartquantity} color="primary">
-											<ShoppingCartOutlinedIcon />
-										</Badge>
-									</Link>
-								</MenuItem>
-							</>
-							:
-							<>
-								<MenuItem>
-									<Link to="login">LOGIN</Link>
-								</MenuItem>
-								<MenuItem>
-									<Link to="register">REGISTER</Link>
-								</MenuItem>
-								<MenuItem>
-									<Link to="cart">
-										<Badge badgeContent={cartquantity} color="primary">
-											<ShoppingCartOutlinedIcon />
-										</Badge>
-									</Link>
-								</MenuItem>
-							</>
-					}
-
+					{user !== null ? (
+						<>
+							<ItemContainer onClick={() => handleLogout()}>
+								<MenuItem>{user.username}</MenuItem>
+								<LogoutIcon />
+							</ItemContainer>
+							<MenuItem>
+								<Link to={`orders/${user._id}`}>MY ORDERS</Link>
+							</MenuItem>
+							<MenuItem>
+								<Link to="cart">
+									<Badge badgeContent={cartquantity} color="primary">
+										<ShoppingCartOutlinedIcon />
+									</Badge>
+								</Link>
+							</MenuItem>
+						</>
+					) : (
+						<>
+							<MenuItem>
+								<Link to="login">LOGIN</Link>
+							</MenuItem>
+							<MenuItem>
+								<Link to="register">REGISTER</Link>
+							</MenuItem>
+							<MenuItem>
+								<Link to="cart">
+									<Badge badgeContent={cartquantity} color="primary">
+										<ShoppingCartOutlinedIcon />
+									</Badge>
+								</Link>
+							</MenuItem>
+						</>
+					)}
 				</Right>
 			</Wrapper>
 		</Container>
@@ -133,4 +135,4 @@ const ItemContainer = styled.div`
 	justify-content: center;
 	gap: 10px;
 	cursor: pointer;
-`
+`;
